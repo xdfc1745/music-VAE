@@ -162,4 +162,7 @@ cython_debug/
 groove
 magenta
 groove-v1.0.0-midionly.zip
-result.tf
+music.tfrecord
+output_*
+train_*
+
