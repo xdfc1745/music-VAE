@@ -37,7 +37,7 @@ python preprocessing.py \
 
 ```
 python train.py \
---config=groovae_4bar \
+--config=groovae_4bar \ # cat-drum_2bar_small, cat-drum_2bar_big으로 바꿔서 사용가능
 --mode=train \
 --run_dir=./ \
 --examples_path=music.tfrecord
@@ -58,3 +58,4 @@ python generate.py \
 --num_outputs=1 \
 --output_dir=output
 ```
+학습시 사용한 config와 같은 config로 지정해주어야한다.
