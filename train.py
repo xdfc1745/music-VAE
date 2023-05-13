@@ -144,7 +144,7 @@ def train(train_dir,
             num_ps_tasks=0,
             task=0):
     """Train loop."""
-    tf.gfile.MakeDirs(train_dir)
+    tf.gfile.MakeDirs(train_dir) # make dir for save checkpoint file
     is_chief = (task == 0)
     if is_chief:
         _trial_summary(
@@ -248,6 +248,7 @@ def run(config_map,
     Raises:
         ValueError: if required flags are missing or invalid.
     """
+    # check flag value
     if not FLAGS.run_dir:
         raise ValueError('Invalid run directory: %s' % FLAGS.run_dir)
     run_dir = os.path.expanduser(FLAGS.run_dir)
@@ -283,14 +284,15 @@ def run(config_map,
     else:
         raise ValueError('Invalid mode: {}'.format(FLAGS.mode))
 
-    def dataset_fn():
+
+    def dataset_fn(): # make dataset for train, eval
         return data.get_dataset(
             config,
             tf_file_reader=tf_file_reader,
             is_training=is_training,
             cache_dataset=FLAGS.cache_dataset)
 
-    if is_training:
+    if is_training: # train
         train(
             train_dir,
             config=config,
@@ -302,7 +304,7 @@ def run(config_map,
             num_sync_workers=FLAGS.num_sync_workers,
             num_ps_tasks=FLAGS.num_ps_tasks,
             task=FLAGS.task)
-    else:
+    else: # eval
         num_batches = FLAGS.eval_num_batches or data.count_examples(
             config.eval_examples_path,
             config.tfds_name,

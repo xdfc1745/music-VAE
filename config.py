@@ -45,96 +45,18 @@ def update_config(config, update_dict):
 
 CONFIG_MAP = {}
 
-# Drums
-CONFIG_MAP['cat-drums_2bar_small'] = Config(
-    model=MusicVAE(lstm_models.BidirectionalLstmEncoder(), lstm_models.CategoricalLstmDecoder()),
-    hparams=merge_hparams(
-        lstm_models.get_default_hparams(),
-        HParams(
-            batch_size=512,
-            max_seq_len=16 * 4,  # 2 bars w/ 16 steps per bar
-            z_size=256,
-            enc_rnn_size=[512],
-            dec_rnn_size=[256, 256],
-            free_bits=48,
-            max_beta=0.2,
-            sampling_schedule='inverse_sigmoid',
-            sampling_rate=1000,
-        )),
-    note_sequence_augmenter=None,
-    data_converter=data.DrumsConverter(
-        max_bars=100,  # Truncate long drum sequences before slicing.
-        slice_bars=4,
-        steps_per_quarter=4,
-        roll_input=True),
-    train_examples_path=None,
-    eval_examples_path=None,
-)
-
-CONFIG_MAP['cat-drums_2bar_big'] = Config(
-    model=MusicVAE(lstm_models.BidirectionalLstmEncoder(), lstm_models.CategoricalLstmDecoder()),
-    hparams=merge_hparams(
-        lstm_models.get_default_hparams(),
-        HParams(
-            batch_size=512,
-            max_seq_len=16 * 4,  # 4 bars w/ 16 steps per bar
-            z_size=512,
-            enc_rnn_size=[2048],
-            dec_rnn_size=[2048, 2048, 2048],
-            free_bits=48,
-            max_beta=0.2,
-            sampling_schedule='inverse_sigmoid',
-            sampling_rate=1000,
-        )),
-    note_sequence_augmenter=None,
-    data_converter=data.DrumsConverter(
-        max_bars=100,  # Truncate long drum sequences before slicing.
-        slice_bars=4,
-        steps_per_quarter=4,
-        roll_input=True),
-    train_examples_path=None,
-    eval_examples_path=None,
-)
-
-CONFIG_MAP['nade-drums_2bar_reduced'] = Config(
-    model=MusicVAE(lstm_models.BidirectionalLstmEncoder(), lstm_models.MultiLabelRnnNadeDecoder()),
-    hparams=merge_hparams(
-        lstm_models.get_default_hparams(),
-        HParams(
-            batch_size=512,
-            max_seq_len=32,  # 2 bars w/ 16 steps per bar
-            z_size=256,
-            enc_rnn_size=[1024],
-            dec_rnn_size=[512, 512],
-            nade_num_hidden=128,
-            free_bits=48,
-            max_beta=0.2,
-            sampling_schedule='inverse_sigmoid',
-            sampling_rate=1000,
-        )),
-    note_sequence_augmenter=None,
-    data_converter=data.DrumsConverter(
-        max_bars=100,  # Truncate long drum sequences before slicing.
-        slice_bars=2,
-        steps_per_quarter=4,
-        roll_input=True,
-        roll_output=True),
-    train_examples_path=None,
-    eval_examples_path=None,
-)
-
 # GrooVAE configs
 CONFIG_MAP['groovae_4bar'] = Config(
-    model=MusicVAE(lstm_models.BidirectionalLstmEncoder(),
-                   lstm_models.GrooveLstmDecoder()),
+    model=MusicVAE(lstm_models.BidirectionalLstmEncoder(), # Encoder using bidirection LSTM
+                   lstm_models.GrooveLstmDecoder()), # Decoder using Hierarchical Decoder (conductor + Decoder)
     hparams=merge_hparams(
         lstm_models.get_default_hparams(),
         HParams(
-            batch_size=512,
+            batch_size=512, # batch size
             max_seq_len=16 * 4,  # 4 bars w/ 16 steps per bar
-            z_size=256,
-            enc_rnn_size=[512],
-            dec_rnn_size=[256, 256],
+            z_size=256, # latent vector size
+            enc_rnn_size=[512], # encoder recursive size
+            dec_rnn_size=[256, 256], # decoder recursive size
             max_beta=0.2,
             free_bits=48,
             dropout_keep_prob=0.3,
