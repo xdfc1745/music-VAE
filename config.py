@@ -52,7 +52,7 @@ CONFIG_MAP['cat-drums_2bar_small'] = Config(
         lstm_models.get_default_hparams(),
         HParams(
             batch_size=512,
-            max_seq_len=32,  # 2 bars w/ 16 steps per bar
+            max_seq_len=16 * 4,  # 2 bars w/ 16 steps per bar
             z_size=256,
             enc_rnn_size=[512],
             dec_rnn_size=[256, 256],
@@ -64,37 +64,12 @@ CONFIG_MAP['cat-drums_2bar_small'] = Config(
     note_sequence_augmenter=None,
     data_converter=data.DrumsConverter(
         max_bars=100,  # Truncate long drum sequences before slicing.
-        slice_bars=2,
+        slice_bars=4,
         steps_per_quarter=4,
         roll_input=True),
     train_examples_path=None,
     eval_examples_path=None,
 )
-
-# CONFIG_MAP['cat-drums_2bar_big'] = Config(
-#     model=MusicVAE(lstm_models.BidirectionalLstmEncoder(), lstm_models.CategoricalLstmDecoder()),
-#     hparams=merge_hparams(
-#         lstm_models.get_default_hparams(),
-#         HParams(
-#             batch_size=512,
-#             max_seq_len=32,  # 2 bars w/ 16 steps per bar
-#             z_size=512,
-#             enc_rnn_size=[2048],
-#             dec_rnn_size=[2048, 2048, 2048],
-#             free_bits=48,
-#             max_beta=0.2,
-#             sampling_schedule='inverse_sigmoid',
-#             sampling_rate=1000,
-#         )),
-#     note_sequence_augmenter=None,
-#     data_converter=data.DrumsConverter(
-#         max_bars=100,  # Truncate long drum sequences before slicing.
-#         slice_bars=2,
-#         steps_per_quarter=4,
-#         roll_input=True),
-#     train_examples_path=None,
-#     eval_examples_path=None,
-# )
 
 CONFIG_MAP['cat-drums_2bar_big'] = Config(
     model=MusicVAE(lstm_models.BidirectionalLstmEncoder(), lstm_models.CategoricalLstmDecoder()),
@@ -140,34 +115,6 @@ CONFIG_MAP['nade-drums_2bar_reduced'] = Config(
     note_sequence_augmenter=None,
     data_converter=data.DrumsConverter(
         max_bars=100,  # Truncate long drum sequences before slicing.
-        slice_bars=2,
-        steps_per_quarter=4,
-        roll_input=True,
-        roll_output=True),
-    train_examples_path=None,
-    eval_examples_path=None,
-)
-
-CONFIG_MAP['nade-drums_2bar_full'] = Config(
-    model=MusicVAE(lstm_models.BidirectionalLstmEncoder(), lstm_models.MultiLabelRnnNadeDecoder()),
-    hparams=merge_hparams(
-        lstm_models.get_default_hparams(),
-        HParams(
-            batch_size=512,
-            max_seq_len=32,  # 2 bars w/ 16 steps per bar
-            z_size=256,
-            enc_rnn_size=[1024],
-            dec_rnn_size=[512, 512],
-            nade_num_hidden=128,
-            free_bits=48,
-            max_beta=0.2,
-            sampling_schedule='inverse_sigmoid',
-            sampling_rate=1000,
-        )),
-    note_sequence_augmenter=None,
-    data_converter=data.DrumsConverter(
-        max_bars=100,  # Truncate long drum sequences before slicing.
-        pitch_classes=data.FULL_DRUM_PITCH_CLASSES,
         slice_bars=2,
         steps_per_quarter=4,
         roll_input=True,
