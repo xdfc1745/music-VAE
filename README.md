@@ -76,4 +76,27 @@ python generate.py \
 --input_midi_2=$MIDI2_FILE_PATH \
 --output_dir=output
 ```
+`num_outputs`로 추출할 샘플의 갯수를 정한다.  
+`output_dir`은 추출한 샘플이 저장될 장소를 의미한다.  
 
+## Conclusion
+### 진행한 내용
+1. groovae 데이터를 이용하여 music VAE 모델을 학습 후, 생성해보았다.
+2. 사전 학습된 `groovae_4bar` 모델을 사용하여 생성해보았다.
+
+사전학습된 모델이 직접 데이터를 통한 학습한 것보다 더 다양한 노트를 사용하여 좋은 음원을 생성할 수 있었다.   
+<p>
+    <img width="251" alt="image" src="https://github.com/xdfc1745/music-VAE/assets/39234312/65610848-723e-4741-9a3e-9865d5595049">
+    직접학습한 모델이 sample방식으로 생성한 midi 파일
+</p>
+<p>
+  <img width="261" alt="image" src="https://github.com/xdfc1745/music-VAE/assets/39234312/846dd722-2900-4a67-918b-0f9083f91e8d">  
+  사전학습된 모델이 sample방식으로 생성한 midi 파일
+</p>
+그에 반해, `interpolate`방식으로 생성한 midi파일의 경우 sample의 방식보다 더 다양한 노트를 사용한 파일을 생성해냈다.
+<p>
+  <img width="260" alt="image" src="https://github.com/xdfc1745/music-VAE/assets/39234312/e1028da6-79a7-4b4e-b6bd-8c23f38faa15">  
+  생성한 모델 2개를 이용한 interpolate 방식으로 생성한 midi 파일
+</p>
+생성한 모델 중 가장 최근 파일 2개 가지고 학습을 진행(model.ckpt-7144.meta, model.ckpt-7130.meta)
+직접학습한 모델이 sample방식으로 생성한 midi 파일
