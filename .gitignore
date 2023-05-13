@@ -159,7 +159,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-groove
+groove*
+groovae_*
 magenta
 groove-v1.0.0-midionly.zip
 train_*
