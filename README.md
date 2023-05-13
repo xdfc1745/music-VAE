@@ -1,6 +1,6 @@
 ## music-VAE
 Music genration을 위한 모델로, 문장과 달리 훨씬 긴 sequence를 생성하는 모델.  
-sequence가 길어지면서 “posterior collapse”문제가 발생할 수 있는데 이를 해결하기 위해서 Hierarchical recurrent decoder를 제안.  
+sequence가 길어지면서 “posterior collapse(RNN 모델이 잠재 벡터를 무시하고 학습에 집중하는 현상)”문제가 발생할 수 있는데 이를 해결하기 위해서 Hierarchical recurrent decoder를 제안.  
 <img width="398" alt="image" src="https://github.com/xdfc1745/music-VAE/assets/39234312/290b6c37-e2ef-482d-93b0-ce03f1aa1092">  
 위의 그림처럼 decoder 부분을 conductor와 Decoder 부분으로 나눠서 hierarchical 하게 구성되어 있다.  
 
@@ -14,12 +14,13 @@ conda create -n music-vae python=3.8.16
 
 conda activate music-vae
 pip install magenta
+pip install note-seq
 ```
 conda 환경을 구축 후, magenta를 설치했다. 하지만 conda를 사용하지 않고 python3.8.x의 환경에서 설치하면 된다.
 
 ## Preprocessing
 midi파일을 학습하기 위해서는 먼저 벡터화를 해주어야 한다.  
-magenta의 convert_directory를 이용해서 벡터 파일인 TFRecord 파일로 변경해주었다. 이는 구글의 Protocla Buffer 포맷으로 데이터를 직렬화하여 저장한 파일 형태이다.  
+magenta의 convert_directory를 이용해서 벡터 파일인 TFRecord 파일로 변경해주었다. 이는 구글의 Protocal Buffer 포맷으로 데이터를 직렬화하여 저장한 파일 형태이다.  
 
 https://magenta.tensorflow.org/datasets/groove   
 데이터는 위의 링크에서 goovae-v1.0.0-midionly 파일을 다운받은 후, 압축을 풀어주었다.  
@@ -36,7 +37,7 @@ python preprocessing.py \
 
 ```
 python train.py \
---config=groovae_4bar \
+--config=groovae_4bar \ 
 --mode=train \
 --run_dir=./ \
 --examples_path=music.tfrecord
@@ -48,12 +49,28 @@ python train.py \
 ```
 
 ## Generate
-위에서 train한 모델을 이용하여 midi 파일을 생성해준다.
+위에서 train한 모델을 이용하여 midi 파일을 생성해준다.  
+
+sample은 모델의 latent spaceing에서 임의의 지점을 디코딩하여 생성한다.  
+interpolate는 더 창의적으로 만들기 위해서, 2개의 다른 디코더의 latent space의 중간지점으로두 멜로디의 의미 요소를 합성하여 생성한다.  
+
+sample 방식을 사용할 경우 아래와 같이 실행한다.
 ```
 python generate.py \
 --config=groovae_4bar \
---checkpoint_file=train \
 --mode=sample \ 
 --num_outputs=1 \
 --output_dir=output
+``` 
+
+interpolate 방식을 사용할 경우 아래와 같이 실행한다.  
 ```
+python generate.py \
+--config=groovae_4bar \
+--mode=interpolate \
+--num_outputs=1 \
+--input_midi_1={input midi 1 file path} \
+--input_midi_2={input midi 2 file path} \
+--output_dir=output
+```
+
