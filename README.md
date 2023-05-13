@@ -14,6 +14,7 @@ conda create -n music-vae python=3.8.16
 
 conda activate music-vae
 pip install magenta
+pip install note-seq
 ```
 conda 환경을 구축 후, magenta를 설치했다. 하지만 conda를 사용하지 않고 python3.8.x의 환경에서 설치하면 된다.
 
