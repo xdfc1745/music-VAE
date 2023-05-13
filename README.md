@@ -98,5 +98,4 @@ python generate.py \
   <img width="260" alt="image" src="https://github.com/xdfc1745/music-VAE/assets/39234312/e1028da6-79a7-4b4e-b6bd-8c23f38faa15">  
   생성한 모델 2개를 이용한 interpolate 방식으로 생성한 midi 파일
 </p>
-생성한 모델 중 가장 최근 파일 2개 가지고 학습을 진행(model.ckpt-7144.meta, model.ckpt-7130.meta)
-직접학습한 모델이 sample방식으로 생성한 midi 파일
+
