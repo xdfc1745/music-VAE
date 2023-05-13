@@ -37,6 +37,8 @@ tf.app.flags.DEFINE_string('input_dir', None, 'Directory containing files to con
 tf.app.flags.DEFINE_string('output_file', None, 'Path to output TFRecord file. Will be overwritten. if it already exists.')
 tf.app.flags.DEFINE_bool('recursive', False, 'Whether or not to recurse into subdirectories.')
 tf.app.flags.DEFINE_string('log', 'INFO', 'The threshold for what messages will be logged DEBUG, INFO, WARN, ERROR, or FATAL.')
+tf.app.flags.DEFINE_string('beat', '4-4', 'bit to use')
+tf.app.flags.DEFINE_bool('is_beat', False, 'Whether or not to use specific beat file')
 
 
 def generate_note_sequence_id(filename, collection_name, source_type):
@@ -78,6 +80,9 @@ def convert_files(root_dir, sub_dir, writer, recursive=False):
     recurse_sub_dirs = []
     written_count = 0
     for file_in_dir in files_in_dir:
+        if FLAGS.is_beat:
+            if FLAGS.beat not in file_in_dir:
+                continue
         tf.logging.log_every_n(tf.logging.INFO, '%d files converted.',1000, written_count)
         full_file_path = os.path.join(dir_to_convert, file_in_dir)
 
@@ -219,6 +224,13 @@ def convert_directory(root_dir, output_file, recursive=False):
     """
     with tf.io.TFRecordWriter(output_file) as writer:
         convert_files(root_dir, '', writer, recursive)
+
+# def extract_beat_file():
+#     midi_file_path = []
+#     beat = FLAGS.beat
+
+#     for (root, directories, files) in os.wal
+    
 
 
 def main(unused_argv):
