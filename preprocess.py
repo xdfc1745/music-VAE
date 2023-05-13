@@ -80,6 +80,8 @@ def convert_files(root_dir, sub_dir, writer, recursive=False):
     for file_in_dir in files_in_dir:
         tf.logging.log_every_n(tf.logging.INFO, '%d files converted.',1000, written_count)
         full_file_path = os.path.join(dir_to_convert, file_in_dir)
+
+        # change to tfrecord(sequence proto)
         if (full_file_path.lower().endswith('.mid') or
             full_file_path.lower().endswith('.midi')):
             try:
@@ -111,7 +113,7 @@ def convert_files(root_dir, sub_dir, writer, recursive=False):
                 recurse_sub_dirs.append(os.path.join(sub_dir, file_in_dir))
             else:
                 tf.logging.warning('Unable to find a converter for file %s', full_file_path)
-
+    # file in sub forder change tfrecord too
     for recurse_sub_dir in recurse_sub_dirs:
         convert_files(root_dir, recurse_sub_dir, writer, recursive)
 
@@ -202,7 +204,7 @@ def convert_abc(root_dir, sub_dir, full_file_path):
 
 
 def convert_directory(root_dir, output_file, recursive=False):
-    """Converts files to NoteSequences and writes to `output_file`.
+    """Converts midi files to NoteSequences and writes to `output_file`.
 
     Input files found in `root_dir` are converted to NoteSequence protos with the
     basename of `root_dir` as the collection_name, and the relative path to the
@@ -222,6 +224,7 @@ def convert_directory(root_dir, output_file, recursive=False):
 def main(unused_argv):
     tf.logging.set_verbosity(FLAGS.log)
 
+    # flag value check
     if not FLAGS.input_dir:
         tf.logging.fatal('--input_dir required')
         return
