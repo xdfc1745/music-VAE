@@ -85,19 +85,12 @@ python generate.py \
 2. 사전 학습된 `groovae_4bar` 모델을 사용하여 생성해보았다.
 
 사전학습된 모델이 직접 데이터를 통한 학습한 것보다 더 다양한 노트를 사용하여 좋은 음원을 생성할 수 있었다.   
-<p>
-    <img width="251" alt="image" src="https://github.com/xdfc1745/music-VAE/assets/39234312/65610848-723e-4741-9a3e-9865d5595049">
-    직접학습한 모델이 sample방식으로 생성한 midi 파일
-</p>
+|![ 직접학습한 10470epoch 모델의 sample방식으로 생성한 midi 파일](image/SAMPLE-0)|![ 직접학습한 10470epoch 모델의 sample방식으로 생성한 midi 파일](image/SAMPLE-1)|![ 직접학습한 10470epoch 모델의 sample방식으로 생성한 midi 파일](image/SAMPLE-2)|
+
+
 <p>
   <img width="261" alt="image" src="https://github.com/xdfc1745/music-VAE/assets/39234312/846dd722-2900-4a67-918b-0f9083f91e8d">  
   사전학습된 모델이 sample방식으로 생성한 midi 파일
 </p>
-그에 반해, `interpolate`방식으로 생성한 midi파일의 경우 sample의 방식보다 더 다양한 노트를 사용한 파일을 생성해냈다.
-<p>
-  <img width="260" alt="image" src="https://github.com/xdfc1745/music-VAE/assets/39234312/e1028da6-79a7-4b4e-b6bd-8c23f38faa15">  
-  생성한 모델 2개를 이용한 interpolate 방식으로 생성한 midi 파일
-</p>
 
 직접 생성한 모델의 경우 많은 epoch을 학습하지 못했고, 더 적은 데이터로 학습을 진행하였기 때문에 사전학습된 모델의 결과가 더 좋게 나온것으로 보인다.  
-또한 sample기법에 비해 interpolate 기법이 더 좋은 결과를 보이는 것 같다.
