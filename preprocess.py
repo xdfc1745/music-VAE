@@ -80,6 +80,7 @@ def convert_files(root_dir, sub_dir, writer, recursive=False):
     recurse_sub_dirs = []
     written_count = 0
     for file_in_dir in files_in_dir:
+        # whether or not use specific beat 
         if FLAGS.is_beat:
             if FLAGS.beat not in file_in_dir:
                 continue
@@ -224,13 +225,6 @@ def convert_directory(root_dir, output_file, recursive=False):
     """
     with tf.io.TFRecordWriter(output_file) as writer:
         convert_files(root_dir, '', writer, recursive)
-
-# def extract_beat_file():
-#     midi_file_path = []
-#     beat = FLAGS.beat
-
-#     for (root, directories, files) in os.wal
-    
 
 
 def main(unused_argv):
